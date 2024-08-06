@@ -23,7 +23,7 @@ runs:
         fi
 
     - name: Send Discord Notification for Branch Events
-      if: github.event.ref_type == "branch"
+      if: github.event.ref_type == 'branch'
       shell: bash
       run: |
         EVENT_ACTION=${{ github.event.action }}
