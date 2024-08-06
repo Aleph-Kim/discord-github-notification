@@ -20,7 +20,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Discord Notification
-        uses: owner/discord-pr-notifier@v1.0.0
+      - name: Send Discord Github Notification
+        uses: Aleph-Kim/discord-github-notification@1.0.0
         with:
           discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
