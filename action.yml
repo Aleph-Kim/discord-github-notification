@@ -1,6 +1,6 @@
-name: 'Discord Github Notification'
-description: 'GitHub Action Marketplace Action to Allow Discord to Receive GitHub Notifications'
-author: 'aleph kim'
+name: 'Discord PR Notifier'
+description: 'Send a notification to Discord when a pull request is opened, synchronized, or reopened.'
+author: 'Your Name'
 inputs:
   discord-webhook-url:
     description: 'The Discord webhook URL.'
@@ -9,6 +9,7 @@ runs:
   using: 'composite'
   steps:
     - name: Send Discord Notification
+      shell: bash
       run: |
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
