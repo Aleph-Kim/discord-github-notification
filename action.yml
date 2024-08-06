@@ -28,11 +28,13 @@ runs:
       run: |
         EVENT_ACTION=${{ github.event.action }}
         EVENT_NAME=${{ github.event_name }}
-        BRANCH_NAME=${{ github.ref }}
+        BRANCH_NAME=$(jq -r .ref < $GITHUB_EVENT_PATH)
+        REPO_URL=${{ github.event.repository.html_url }}
+        BRANCH_URL="${REPO_URL}/tree/${BRANCH_NAME}"
         if [[ "$EVENT_NAME" == 'create' || "$EVENT_NAME" == 'delete' ]]; then
           curl -X POST ${{ inputs.discord-webhook-url }} \
           -H "Content-Type: application/json" \
-          -d "{\"content\": \"Branch ${EVENT_ACTION}: ${BRANCH_NAME}\"}"
+          -d "{\"content\": \"Branch ${EVENT_ACTION}: ${BRANCH_NAME}\n${BRANCH_URL}\"}"
         fi
         
     - name: Send Discord Notification for Issue Events
