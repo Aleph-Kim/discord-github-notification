@@ -1,6 +1,6 @@
-name: 'Discord PR Notifier'
-description: 'Send a notification to Discord when a pull request is opened, synchronized, or reopened.'
-author: 'Your Name'
+name: 'Discord Github Notification'
+description: 'GitHub Action Marketplace Action to Allow Discord to Receive GitHub Notifications'
+author: 'Aleph Kim'
 inputs:
   discord-webhook-url:
     description: 'The Discord webhook URL.'
@@ -8,12 +8,46 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Send Discord Notification
+    - name: Send Discord Notification for PR Events
+      if: github.event_name == 'pull_request'
       shell: bash
       run: |
-        curl -X POST ${{ inputs.discord-webhook-url }} \
-        -H "Content-Type: application/json" \
-        -d "{\"content\": \"New PR opened: ${{ github.event.pull_request.title }} by ${{ github.event.pull_request.user.login }}\n${{ github.event.pull_request.html_url }}\"}"
+        PR_ACTION=$(jq -r .action < $GITHUB_EVENT_PATH)
+        if [[ "$PR_ACTION" == "opened" || "$PR_ACTION" == "synchronize" || "$PR_ACTION" == "reopened" || "$PR_ACTION" == "closed" ]]; then
+          PR_TITLE=$(jq -r .pull_request.title < $GITHUB_EVENT_PATH)
+          PR_USER=$(jq -r .pull_request.user.login < $GITHUB_EVENT_PATH)
+          PR_URL=$(jq -r .pull_request.html_url < $GITHUB_EVENT_PATH)
+          curl -X POST ${{ inputs.discord-webhook-url }} \
+          -H "Content-Type: application/json" \
+          -d "{\"content\": \"PR ${PR_ACTION}: ${PR_TITLE} by ${PR_USER}\n${PR_URL}\"}"
+        fi
+
+    - name: Send Discord Notification for Branch Events
+      if: github.event.ref_type == "branch"
+      shell: bash
+      run: |
+        EVENT_ACTION=${{ github.event.action }}
+        EVENT_NAME=${{ github.event_name }}
+        BRANCH_NAME=${{ github.ref }}
+        if [[ "$EVENT_NAME" == 'create' || "$EVENT_NAME" == 'delete' ]]; then
+          curl -X POST ${{ inputs.discord-webhook-url }} \
+          -H "Content-Type: application/json" \
+          -d "{\"content\": \"Branch ${EVENT_ACTION}: ${BRANCH_NAME}\"}"
+        fi
+        
+    - name: Send Discord Notification for Issue Events
+      if: github.event_name == 'issues'
+      shell: bash
+      run: |
+        ISSUE_ACTION=$(jq -r .action < $GITHUB_EVENT_PATH)
+        if [[ "$ISSUE_ACTION" == "opened" || "$ISSUE_ACTION" == "closed" || "$ISSUE_ACTION" == "deleted" ]]; then
+          ISSUE_TITLE=$(jq -r .issue.title < $GITHUB_EVENT_PATH)
+          ISSUE_USER=$(jq -r .issue.user.login < $GITHUB_EVENT_PATH)
+          ISSUE_URL=$(jq -r .issue.html_url < $GITHUB_EVENT_PATH)
+          curl -X POST ${{ inputs.discord-webhook-url }} \
+          -H "Content-Type: application/json" \
+          -d "{\"content\": \"Issue ${ISSUE_ACTION}: ${ISSUE_TITLE} by ${ISSUE_USER}\n${ISSUE_URL}\"}"
+        fi
 branding:
   color: 'blue'
   icon: 'bell'
