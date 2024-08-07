@@ -22,8 +22,8 @@ runs:
       id: read-messages
       shell: bash
       run: |
-        MESSAGES=$(cat messages-repo/messages.json)
-        echo "MESSAGES=$(echo "$MESSAGES" | jq -c .)" >> $GITHUB_ENV
+        MESSAGES=$(cat messages-repo/messages.json | jq -c . | sed 's/\\n/\n/g')
+        echo "MESSAGES=$MESSAGES" >> $GITHUB_ENV
 
     - name: Send Discord Notification for PR Events
       if: github.event_name == 'pull_request'
