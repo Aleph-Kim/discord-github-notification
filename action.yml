@@ -36,7 +36,7 @@ runs:
         LANGUAGE=${{ inputs.language }}
         MESSAGE_KEY="PR_${PR_ACTION^^}"
         MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s/{title}/$PR_TITLE/" | sed "s/{user}/$PR_USER/" | sed "s/{url}/$PR_URL/")
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$PR_TITLE|" | sed "s|{user}|$PR_USER|" | sed "s|{url}|$PR_URL|")
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
@@ -59,7 +59,7 @@ runs:
           BRANCH_URL="${REPO_URL}/branches"
         fi
 
-        MESSAGE=$(echo $MESSAGE | sed "s/{name}/$BRANCH_NAME/" | sed "s/{user}/$BRANCH_USER/" | sed "s/{url}/$BRANCH_URL/")
+        MESSAGE=$(echo $MESSAGE | sed "s|{name}|$BRANCH_NAME|" | sed "s|{user}|$BRANCH_USER|" | sed "s|{url}|$BRANCH_URL|")
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
@@ -75,7 +75,7 @@ runs:
         LANGUAGE=${{ inputs.language }}
         MESSAGE_KEY="ISSUE_${ISSUE_ACTION^^}"
         MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s/{title}/$ISSUE_TITLE/" | sed "s/{user}/$ISSUE_USER/" | sed "s/{url}/$ISSUE_URL/")
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$ISSUE_TITLE|" | sed "s|{user}|$ISSUE_USER|" | sed "s|{url}|$ISSUE_URL|")
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
