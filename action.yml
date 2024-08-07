@@ -12,11 +12,17 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Checkout deployer's repository for messages.json
+      uses: actions/checkout@v2
+      with:
+        repository: 'Aleph-Kim/discord-github-notification'
+        path: messages-repo
+
     - name: Read Notification Messages
       id: read-messages
       shell: bash
       run: |
-        MESSAGES=$(cat messages.json)
+        MESSAGES=$(cat messages-repo/messages.json)
         echo "MESSAGES=$MESSAGES" >> $GITHUB_ENV
 
     - name: Send Discord Notification for PR Events
