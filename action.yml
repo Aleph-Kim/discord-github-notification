@@ -59,7 +59,7 @@ runs:
           BRANCH_URL="${REPO_URL}/branches"
         fi
 
-        MESSAGE=$(echo $MESSAGE | sed "s|{name}|$BRANCH_NAME|" | sed "s|{user}|$BRANCH_USER|" | sed "s|{url}|$BRANCH_URL|")
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$BRANCH_NAME|" | sed "s|{user}|$BRANCH_USER|" | sed "s|{url}|$BRANCH_URL|")
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"

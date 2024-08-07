@@ -1,24 +1,22 @@
 {
     "korean": {
-        "PR_OPENED": "**PR이 생성 되었습니다.**: {title}\n작성자: {user}\n{url}",
-        "PR_SYNCHRONIZE": "**PR이 동기화 되었습니다.**: {title}\n작성자: {user}\n{url}",
-        "PR_REOPENED": "** 닫혔던 PR이 다시 열렸습니다.**: {title}\n작성자: {user}\n{url}",
-        "PR_CLOSED": "**PR이 닫혔습니다.**: {title}\n작성자: {user}\n{url}",
-        "BRANCH_CREATE": "**브랜치가 생성 되었습니다.**: {name}\n작성자: {user}\n{url}",
-        "BRANCH_DELETE": "**브랜치 삭제 되었습니다.**: {name}\n작성자: {user}\n{url}",
-        "ISSUE_OPENED": "**이슈 열렸습니다.**: {title}\n작성자: {user}\n{url}",
-        "ISSUE_CLOSED": "**이슈 닫혔습니다.**: {title}\n작성자: {user}\n{url}",
-        "ISSUE_DELETED": "**이슈 삭제 되었습니다.**: {title}\n작성자: {user}\n{url}"
+        "PR_OPENED": "**PR이 생성 되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "PR_SYNCHRONIZE": "**PR이 동기화 되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "PR_REOPENED": "**PR이 다시 열렸습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "PR_CLOSED": "**PR이 닫혔습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "BRANCH_CREATE": "**브랜치가 생성 되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
+        "BRANCH_DELETE": "**브랜치 삭제 되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
+        "ISSUE_OPENED": "**새로운 이슈가 열렸습니다!**\n이슈 명: {title}\n작성자: {user}\n{url}",
+        "ISSUE_CLOSED": "**이슈가 닫혔습니다!**\n이슈 명: {title}\n작성자: {user}\n{url}"
     },
     "english": {
-        "PR_OPENED": "PR opened: {title}\nby {user}\n{url}",
-        "PR_SYNCHRONIZE": "PR synchronized: {title}\nby {user}\n{url}",
-        "PR_REOPENED": "PR reopened: {title}\nby {user}\n{url}",
-        "PR_CLOSED": "PR closed: {title}\nby {user}\n{url}",
-        "BRANCH_CREATE": "Branch created: {name}\nby {user}\n{url}",
-        "BRANCH_DELETE": "Branch deleted: {name}\nby {user}\n{url}",
-        "ISSUE_OPENED": "Issue opened: {title}\nby {user}\n{url}",
-        "ISSUE_CLOSED": "Issue closed: {title}\nby {user}\n{url}",
-        "ISSUE_DELETED": "Issue deleted: {title}\nby {user}\n{url}"
+        "PR_OPENED": "**PR opened!**\ntitle: {title}\nby {user}\n{url}",
+        "PR_SYNCHRONIZE": "**PR synchronized!**\ntitle: {title}\nby {user}\n{url}",
+        "PR_REOPENED": "**PR reopened!**\ntitle: {title}\nby {user}\n{url}",
+        "PR_CLOSED": "**PR closed!**\ntitle: {title}\nby {user}\n{url}",
+        "BRANCH_CREATE": "**Branch created!**\ntitle: {title}\nby {user}\n{url}",
+        "BRANCH_DELETE": "**Branch deleted!**\ntitle: {title}\nby {user}\n{url}",
+        "ISSUE_OPENED": "**Issue opened!**\ntitle: {title}\nby {user}\n{url}",
+        "ISSUE_CLOSED": "**Issue closed!**\ntitle: {title}\nby {user}\n{url}"
     }
 }
