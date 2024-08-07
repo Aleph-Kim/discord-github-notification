@@ -1,11 +1,12 @@
 {
     "korean": {
-        "PR_OPENED": "**PR이 생성 되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
-        "PR_SYNCHRONIZE": "**PR이 동기화 되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "PR_OPENED": "**PR이 생성되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "PR_SYNCHRONIZE": "**PR이 동기화되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
         "PR_REOPENED": "**PR이 다시 열렸습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
         "PR_CLOSED": "**PR이 닫혔습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
-        "BRANCH_CREATE": "**브랜치가 생성 되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
-        "BRANCH_DELETE": "**브랜치 삭제 되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
+        "PR_MERGED": "**PR이 병합되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "BRANCH_CREATE": "**브랜치가 생성되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
+        "BRANCH_DELETE": "**브랜치 삭제되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
         "ISSUE_OPENED": "**새로운 이슈가 열렸습니다!**\n이슈 명: {title}\n작성자: {user}\n{url}",
         "ISSUE_CLOSED": "**이슈가 닫혔습니다!**\n이슈 명: {title}\n작성자: {user}\n{url}"
     },
