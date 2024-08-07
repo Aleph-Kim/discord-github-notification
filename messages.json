@@ -1,0 +1,24 @@
+{
+    "korean": {
+        "PR_OPENED": "PR 열림: {title}\n작성자: {user}\n{url}",
+        "PR_SYNCHRONIZE": "PR 동기화: {title}\n작성자: {user}\n{url}",
+        "PR_REOPENED": "PR 다시 열림: {title}\n작성자: {user}\n{url}",
+        "PR_CLOSED": "PR 닫힘: {title}\n작성자: {user}\n{url}",
+        "BRANCH_CREATE": "브랜치 생성: {name}\n작성자: {user}\n{url}",
+        "BRANCH_DELETE": "브랜치 삭제: {name}\n작성자: {user}\n{url}",
+        "ISSUE_OPENED": "이슈 열림: {title}\n작성자: {user}\n{url}",
+        "ISSUE_CLOSED": "이슈 닫힘: {title}\n작성자: {user}\n{url}",
+        "ISSUE_DELETED": "이슈 삭제: {title}\n작성자: {user}\n{url}"
+    },
+    "english": {
+        "PR_OPENED": "PR opened: {title}\nby {user}\n{url}",
+        "PR_SYNCHRONIZE": "PR synchronized: {title}\nby {user}\n{url}",
+        "PR_REOPENED": "PR reopened: {title}\nby {user}\n{url}",
+        "PR_CLOSED": "PR closed: {title}\nby {user}\n{url}",
+        "BRANCH_CREATE": "Branch created: {name}\nby {user}\n{url}",
+        "BRANCH_DELETE": "Branch deleted: {name}\nby {user}\n{url}",
+        "ISSUE_OPENED": "Issue opened: {title}\nby {user}\n{url}",
+        "ISSUE_CLOSED": "Issue closed: {title}\nby {user}\n{url}",
+        "ISSUE_DELETED": "Issue deleted: {title}\nby {user}\n{url}"
+    }
+}
