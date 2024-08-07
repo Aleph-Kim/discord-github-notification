@@ -23,7 +23,7 @@ runs:
       shell: bash
       run: |
         MESSAGES=$(cat messages-repo/messages.json)
-        echo "MESSAGES=$MESSAGES" >> $GITHUB_ENV
+        echo "MESSAGES=$(echo "$MESSAGES" | jq -c .)" >> $GITHUB_ENV
 
     - name: Send Discord Notification for PR Events
       if: github.event_name == 'pull_request'
