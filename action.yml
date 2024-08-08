@@ -1,115 +1,118 @@
-name: 'Discord Github Notification'
-description: 'GitHub Action Marketplace Action to Allow Discord to Receive GitHub Notifications'
-author: 'Aleph Kim'
-inputs:
-  discord-webhook-url:
-    description: 'The Discord webhook URL.'
-    required: true
-  language:
-    description: 'The language for notifications (korean or english).'
-    required: false
-    default: 'korean'
-runs:
-  using: 'composite'
-  steps:
-    - name: Checkout deployer's repository for messages.json
-      uses: actions/checkout@v2
-      with:
-        repository: 'Aleph-Kim/discord-github-notification'
-        path: messages-repo
+name: 'Discord Github Notification' # GitHub Action의 이름
+description: 'GitHub Action Marketplace Action to Allow Discord to Receive GitHub Notifications' # GitHub Action에 대한 설명
+author: 'Aleph Kim' # 작성자
 
-    - name: Read Notification Messages
+inputs:
+  discord-webhook-url: # 디스코드 웹훅 URL 입력값
+    description: 'The Discord webhook URL.' # 디스코드 웹훅 URL에 대한 설명
+    required: true # 필수 입력값 여부
+  language: # 알림 메시지의 언어 입력값
+    description: 'The language for notifications (korean or english).' # 알림 메시지의 언어에 대한 설명
+    required: false # 필수 입력값 여부
+    default: 'korean' # 기본값
+
+runs:
+  using: 'composite' # composite 실행 유형
+  steps:
+    - name: Checkout deployer's repository for messages.json # 메시지 파일을 체크아웃하는 단계
+      uses: actions/checkout@v2 # checkout 액션 사용
+      with:
+        repository: 'Aleph-Kim/discord-github-notification' # 체크아웃할 레포지토리
+        path: messages-repo # 레포지토리를 체크아웃할 경로
+
+    - name: Read Notification Messages # 알림 메시지를 읽어오는 단계
       id: read-messages
       shell: bash
       run: |
-        MESSAGES=$(cat messages-repo/messages.json | jq -c . | sed 's/\\n/\\\\n/g')
-        echo "MESSAGES=$MESSAGES" >> $GITHUB_ENV
+        MESSAGES=$(cat messages-repo/messages.json | jq -c . | sed 's/\\n/\\\\n/g') # messages.json 파일을 읽어와서 MESSAGES 환경 변수에 저장
+        echo "MESSAGES=$MESSAGES" >> $GITHUB_ENV # MESSAGES 변수를 GitHub 환경 변수로 설정
 
-    - name: Send Discord Notification for PR Events
-      if: github.event_name == 'pull_request'
+    - name: Send Discord Notification for PR Events # PR 이벤트에 대한 디스코드 알림을 보내는 단계
+      if: github.event_name == 'pull_request' # 이벤트가 pull_request일 경우에만 실행
       shell: bash
       run: |
-        PR_ACTION=$(jq -r .action < $GITHUB_EVENT_PATH)
-        PR_TITLE=$(jq -r .pull_request.title < $GITHUB_EVENT_PATH)
-        PR_USER=$(jq -r .pull_request.user.login < $GITHUB_EVENT_PATH)
-        PR_URL=$(jq -r .pull_request.html_url < $GITHUB_EVENT_PATH)
-        LANGUAGE=${{ inputs.language }}
-        MESSAGE_KEY="PR_${PR_ACTION^^}"
-        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$PR_TITLE|" | sed "s|{user}|$PR_USER|" | sed "s|{url}|$PR_URL|")
-        curl -X POST ${{ inputs.discord-webhook-url }} \
+        PR_ACTION=$(jq -r .action < $GITHUB_EVENT_PATH) # PR 액션 종류 추출
+        PR_TITLE=$(jq -r .pull_request.title < $GITHUB_EVENT_PATH) # PR 제목 추출
+        PR_USER=$(jq -r .pull_request.user.login < $GITHUB_EVENT_PATH) # PR 작성자 추출
+        PR_URL=$(jq -r .pull_request.html_url < $GITHUB_EVENT_PATH) # PR URL 추출
+        LANGUAGE=${{ inputs.language }} # 입력값으로부터 언어 설정
+        MESSAGE_KEY="PR_${PR_ACTION^^}" # 메시지 키 생성
+        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}") # 메시지 템플릿 가져오기
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$PR_TITLE|" | sed "s|{user}|$PR_USER|" | sed "s|{url}|$PR_URL|") # 메시지 템플릿에 값 대입
+        curl -X POST ${{ inputs.discord-webhook-url }} \ # 디스코드 웹훅 URL로 POST 요청 보내기
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
 
-    - name: Send Discord Notification for Merged PRs
-      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    - name: Send Discord Notification for Merged PRs # 병합된 PR에 대한 디스코드 알림을 보내는 단계
+      if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true # 이벤트가 pull_request, 액션이 closed, PR이 병합된 경우에만 실행
       shell: bash
       run: |
-        PR_TITLE=$(jq -r .pull_request.title < $GITHUB_EVENT_PATH)
-        PR_USER=$(jq -r .pull_request.user.login < $GITHUB_EVENT_PATH)
-        PR_URL=$(jq -r .pull_request.html_url < $GITHUB_EVENT_PATH)
-        LANGUAGE=${{ inputs.language }}
-        MESSAGE_KEY="PR_MERGED"
-        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$PR_TITLE|" | sed "s|{user}|$PR_USER|" | sed "s|{url}|$PR_URL|")
-        curl -X POST ${{ inputs.discord-webhook-url }} \
+        PR_TITLE=$(jq -r .pull_request.title < $GITHUB_EVENT_PATH) # PR 제목 추출
+        PR_USER=$(jq -r .pull_request.user.login < $GITHUB_EVENT_PATH) # PR 작성자 추출
+        PR_URL=$(jq -r .pull_request.html_url < $GITHUB_EVENT_PATH) # PR URL 추출
+        LANGUAGE=${{ inputs.language }} # 입력값으로부터 언어 설정
+        MESSAGE_KEY="PR_MERGED" # 메시지 키 생성
+        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}") # 메시지 템플릿 가져오기
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$PR_TITLE|" | sed "s|{user}|$PR_USER|" | sed "s|{url}|$PR_URL|") # 메시지 템플릿에 값 대입
+        curl -X POST ${{ inputs.discord-webhook-url }} \ # 디스코드 웹훅 URL로 POST 요청 보내기
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
 
-    - name: Send Discord Notification for Branch Events
-      if: github.event.ref_type == 'branch'
+    - name: Send Discord Notification for Branch Events # 브랜치 이벤트에 대한 디스코드 알림을 보내는 단계
+      if: github.event.ref_type == 'branch' # 이벤트가 브랜치일 경우에만 실행
       shell: bash
       run: |
-        EVENT_NAME=${{ github.event_name }}
-        BRANCH_NAME=$(jq -r .ref < $GITHUB_EVENT_PATH)
-        BRANCH_USER=$(jq -r .sender.login < $GITHUB_EVENT_PATH)
-        REPO_URL=$(jq -r .repository.html_url < $GITHUB_EVENT_PATH)
-        LANGUAGE=${{ inputs.language }}
-        MESSAGE_KEY="BRANCH_${EVENT_NAME^^}"
-        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
+        EVENT_NAME=${{ github.event_name }} # 이벤트 이름 추출
+        BRANCH_NAME=$(jq -r .ref < $GITHUB_EVENT_PATH) # 브랜치 이름 추출
+        BRANCH_USER=$(jq -r .sender.login < $GITHUB_EVENT_PATH) # 브랜치 생성/삭제 사용자 추출
+        REPO_URL=$(jq -r .repository.html_url < $GITHUB_EVENT_PATH) # 레포지토리 URL 추출
+        LANGUAGE=${{ inputs.language }} # 입력값으로부터 언어 설정
+        MESSAGE_KEY="BRANCH_${EVENT_NAME^^}" # 메시지 키 생성
+        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}") # 메시지 템플릿 가져오기
 
-        if [[ "$EVENT_NAME" == 'create' ]]; then
-          BRANCH_URL="${REPO_URL}/tree/${BRANCH_NAME}"
-        elif [[ "$EVENT_NAME" == 'delete' ]]; then
-          BRANCH_URL="${REPO_URL}/branches"
+        if [[ "$EVENT_NAME" == 'create' ]]; then # 브랜치 생성 이벤트일 경우
+          BRANCH_URL="${REPO_URL}/tree/${BRANCH_NAME}" # 브랜치 URL 생성
+        elif [[ "$EVENT_NAME" == 'delete' ]]; then # 브랜치 삭제 이벤트일 경우
+          BRANCH_URL="${REPO_URL}/branches" # 브랜치 URL 설정
         fi
 
-        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$BRANCH_NAME|" | sed "s|{user}|$BRANCH_USER|" | sed "s|{url}|$BRANCH_URL|")
-        curl -X POST ${{ inputs.discord-webhook-url }} \
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$BRANCH_NAME|" | sed "s|{user}|$BRANCH_USER|" | sed "s|{url}|$BRANCH_URL|") # 메시지 템플릿에 값 대입
+        curl -X POST ${{ inputs.discord-webhook-url }} \ # 디스코드 웹훅 URL로 POST 요청 보내기
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
         
-    - name: Send Discord Notification for Issue Events
-      if: github.event_name == 'issues'
+    - name: Send Discord Notification for Issue Events # 이슈 이벤트에 대한 디스코드 알림을 보내는 단계
+      if: github.event_name == 'issues' # 이벤트가 이슈일 경우에만 실행
       shell: bash
       run: |
-        ISSUE_ACTION=$(jq -r .action < $GITHUB_EVENT_PATH)
-        ISSUE_TITLE=$(jq -r .issue.title < $GITHUB_EVENT_PATH)
-        ISSUE_USER=$(jq -r .issue.user.login < $GITHUB_EVENT_PATH)
-        ISSUE_URL=$(jq -r .issue.html_url < $GITHUB_EVENT_PATH)
-        LANGUAGE=${{ inputs.language }}
-        MESSAGE_KEY="ISSUE_${ISSUE_ACTION^^}"
-        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$ISSUE_TITLE|" | sed "s|{user}|$ISSUE_USER|" | sed "s|{url}|$ISSUE_URL|")
-        curl -X POST ${{ inputs.discord-webhook-url }} \
+        ISSUE_ACTION=$(jq -r .action < $GITHUB_EVENT_PATH) # 이슈 액션 종류 추출
+        ISSUE_TITLE=$(jq -r .issue.title < $GITHUB_EVENT_PATH) # 이슈 제목 추출
+        ISSUE_USER=$(jq -r .issue.user.login < $GITHUB_EVENT_PATH) # 이슈 작성자 추출
+        ISSUE_URL=$(jq -r .issue.html_url < $GITHUB_EVENT_PATH) # 이슈 URL 추출
+        LANGUAGE=${{ inputs.language }} # 입력값으로부터 언어 설정
+        MESSAGE_KEY="ISSUE_${ISSUE_ACTION^^}" # 메시지 키 생성
+        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}") # 메시지 템플릿 가져오기
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$ISSUE_TITLE|" | sed "s|{user}|$ISSUE_USER|" | sed "s|{url}|$ISSUE_URL|") # 메시지 템플릿에 값 대입
+        curl -X POST ${{ inputs.discord-webhook-url }} \ # 디스코드 웹훅 URL로 POST 요청 보내기
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
 
-    - name: Send Discord Notification for Push Events
-      if: github.event_name == 'push'
+    - name: Send Discord Notification for Push Events # 푸시 이벤트에 대한 디스코드 알림을 보내는 단계
+      if: github.event_name == 'push' # 이벤트가 푸시일 경우에만 실행
       shell: bash
       run: |
-        COMMIT_MESSAGE=$(jq -r .head_commit.message < $GITHUB_EVENT_PATH)
-        COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -n 1)
-        COMMIT_USER=$(jq -r .head_commit.author.name < $GITHUB_EVENT_PATH)
-        COMMIT_URL=$(jq -r .head_commit.url < $GITHUB_EVENT_PATH)
-        LANGUAGE=${{ inputs.language }}
-        MESSAGE_KEY="PUSH"
-        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$COMMIT_TITLE|" | sed "s|{user}|$COMMIT_USER|" | sed "s|{url}|$COMMIT_URL|")
-        curl -X POST ${{ inputs.discord-webhook-url }} \
+        COMMIT_MESSAGE=$(jq -r .head_commit.message < $GITHUB_EVENT_PATH) # 커밋 메시지 추출
+        COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -n 1) # 커밋 제목 추출
+        COMMIT_USER=$(jq -r .head_commit.author.name < $GITHUB_EVENT_PATH) # 커밋 작성자 추출
+        COMMIT_URL=$(jq -r .head_commit.url < $GITHUB_EVENT_PATH) # 커밋 URL 추출
+        LANGUAGE=${{ inputs.language }} # 입력값으로부터 언어 설정
+        MESSAGE_KEY="PUSH" # 메시지 키 생성
+        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}") # 메시지 템플릿 가져오기
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$COMMIT_TITLE|" | sed "s|{user}|$COMMIT_USER|" | sed "s|{url}|$COMMIT_URL|") # 메시지 템플릿에 값 대입s
+        curl -X POST ${{ inputs.discord-webhook-url }} \ # 디스코드 웹훅 URL로 POST 요청 보내기
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
+        
 branding:
   color: 'blue'
   icon: 'bell'
