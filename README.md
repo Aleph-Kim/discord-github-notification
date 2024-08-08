@@ -1,5 +1,9 @@
 # 📢 Discord Github Notification Action
+
 이 GitHub Action은 GitHub 이벤트 발생 시 Discord 웹훅을 통해 알림을 전송하는 기능을 간편하게 제공합니다.
+
+This GitHub Action provides an easy way to send notifications via a Discord webhook when GitHub events occur.    
+Please refer to the link below for [English readme](README_EN.md).
 
 ## 🧺 준비물
 
@@ -9,7 +13,7 @@
 
 ## 🚀 사용 방법 예시
 
-1. GitHub 리포지토리의 `.github/workflows` 디렉토리에 새로운 YAML 파일을 만듭니다(예: `discord-notification.yml`).\n
+1. GitHub 리포지토리의 `.github/workflows` 디렉토리에 새로운 YAML 파일을 만듭니다(예: `discord-notification.yml`).    
 아래 예제를 참고하여 파일 내용을 작성하세요.
 
 ```yml
@@ -42,6 +46,8 @@ jobs:
         language: 'english' # 영어 설정(기본값 : 한국어)
 ```
 
+github action에서 사용 가능한 `on 이벤트 트리거`에 대해서는 [GitHub Actions 공식 문서](https://docs.github.com/ko/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)를 참고해주세요.
+
 ---
 
 ## 💬 입력 파라미터
@@ -51,7 +57,7 @@ jobs:
 ---
 
 ## 🛠 secrets 설정
-GitHub 리포지토리의 Settings > Secrets and variables > Actions에서 New repository secret을 클릭하고 `DISCORD_WEBHOOK_URL` 이름으로 웹훅 URL을 추가합니다.
+GitHub 리포지토리의 `Settings` > `Secrets and variables` > `Actions`에서 `New repository secret`을 클릭하고 `DISCORD_WEBHOOK_URL` 이름으로 웹훅 URL을 추가합니다.
 
 ---
 
