@@ -94,6 +94,21 @@ runs:
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
+
+    - name: Send Discord Notification for Push Events
+      if: github.event_name == 'push'
+      shell: bash
+      run: |
+        COMMIT_MESSAGE=$(jq -r .head_commit.message < $GITHUB_EVENT_PATH)
+        COMMIT_USER=$(jq -r .head_commit.author.name < $GITHUB_EVENT_PATH)
+        COMMIT_URL=$(jq -r .head_commit.url < $GITHUB_EVENT_PATH)
+        LANGUAGE=${{ inputs.language }}
+        MESSAGE_KEY="PUSH"
+        MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
+        MESSAGE=$(echo $MESSAGE | sed "s|{message}|$COMMIT_MESSAGE|" | sed "s|{user}|$COMMIT_USER|" | sed "s|{url}|$COMMIT_URL|")
+        curl -X POST ${{ inputs.discord-webhook-url }} \
+        -H "Content-Type: application/json" \
+        -d "{\"content\": \"${MESSAGE}\"}"
 branding:
   color: 'blue'
   icon: 'bell'
