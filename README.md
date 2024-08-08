@@ -43,7 +43,6 @@ jobs:
       uses: Aleph-Kim/discord-github-notification@v1
       with:
         discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }} # secret key에 저장한 discord webhook url
-        language: 'english' # 영어 설정(기본값 : 한국어)
 ```
 
 github action에서 사용 가능한 `on 이벤트 트리거`에 대해서는 [GitHub Actions 공식 문서](https://docs.github.com/ko/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)를 참고해주세요.
