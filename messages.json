@@ -1,7 +1,7 @@
 {
     "korean": {
         "PR_OPENED": "**PR이 생성되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
-        "PR_SYNCHRONIZE": "**PR이 동기화되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
+        "PR_SYNCHRONIZE": "**PR이 업데이트 되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
         "PR_REOPENED": "**PR이 다시 열렸습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
         "PR_CLOSED": "**PR이 닫혔습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
         "PR_MERGED": "**PR이 병합되었습니다!**\nPR 명: {title}\n작성자: {user}\n{url}",
