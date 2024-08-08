@@ -9,20 +9,37 @@ inputs:
     description: 'The language for notifications (korean or english).'
     required: false
     default: 'korean'
+  custom:
+    required: false
+    default: 'false'
+    
 runs:
   using: 'composite'
   steps:
-    - name: Checkout deployer's repository for messages.json
-      uses: actions/checkout@v2
+    - name: Checkout messages.json from user repository
+      if: inputs.custom == 'true'
+      uses: actions/checkout@v4
+      with:
+        path: custom-messages-repo
+        repository: ${{ github.repository }}
+        ref: ${{ github.ref }}
+
+    - name: Checkout default messages.json from deployer's repository
+      if: inputs.custom == 'false'
+      uses: actions/checkout@v4
       with:
         repository: 'Aleph-Kim/discord-github-notification'
-        path: messages-repo
+        path: default-messages-repo
 
     - name: Read Notification Messages
       id: read-messages
       shell: bash
       run: |
-        MESSAGES=$(cat messages-repo/messages.json | jq -c . | sed 's/\\n/\\\\n/g')
+        if [[ "${{ inputs.custom }}" == "true" ]]; then
+          MESSAGES=$(cat custom-messages-repo/.github/workflows/messages.json | jq -c . | sed 's/\\n/\\\\n/g')
+        else
+          MESSAGES=$(cat default-messages-repo/messages.json | jq -c . | sed 's/\\n/\\\\n/g')
+        fi
         echo "MESSAGES=$MESSAGES" >> $GITHUB_ENV
 
     - name: Send Discord Notification for PR Events
