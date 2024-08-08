@@ -9,7 +9,7 @@
         "BRANCH_DELETE": "**브랜치 삭제되었습니다!**\n브런치 명: {title}\n작성자: {user}\n{url}",
         "ISSUE_OPENED": "**새로운 이슈가 열렸습니다!**\n이슈 명: {title}\n작성자: {user}\n{url}",
         "ISSUE_CLOSED": "**이슈가 닫혔습니다!**\n이슈 명: {title}\n작성자: {user}\n{url}",
-        "PUSH": "**새로운 커밋이 발생했습니다!**\n커밋 메시지: {message}\n작성자: {user}\n{url}"
+        "PUSH": "**새로운 커밋이 발생했습니다!**\n커밋 명: {title}\n작성자: {user}\n{url}"
 
     },
     "english": {
@@ -22,6 +22,6 @@
         "BRANCH_DELETE": "**Branch deleted!**\ntitle: {title}\nby {user}\n{url}",
         "ISSUE_OPENED": "**Issue opened!**\ntitle: {title}\nby {user}\n{url}",
         "ISSUE_CLOSED": "**Issue closed!**\ntitle: {title}\nby {user}\n{url}",
-        "PUSH": "**Commit pushed!**\nmessage: {message}\n작성자: {user}\n{url}"
+        "PUSH": "**Commit pushed!**\title: {title}\n작성자: {user}\n{url}"
     }
 }

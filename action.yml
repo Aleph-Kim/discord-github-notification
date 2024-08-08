@@ -100,12 +100,13 @@ runs:
       shell: bash
       run: |
         COMMIT_MESSAGE=$(jq -r .head_commit.message < $GITHUB_EVENT_PATH)
+        COMMIT_TITLE=$(echo "$COMMIT_MESSAGE" | head -n 1)
         COMMIT_USER=$(jq -r .head_commit.author.name < $GITHUB_EVENT_PATH)
         COMMIT_URL=$(jq -r .head_commit.url < $GITHUB_EVENT_PATH)
         LANGUAGE=${{ inputs.language }}
         MESSAGE_KEY="PUSH"
         MESSAGE=$(echo $MESSAGES | jq -r ".${LANGUAGE}.${MESSAGE_KEY}")
-        MESSAGE=$(echo $MESSAGE | sed "s|{message}|$COMMIT_MESSAGE|" | sed "s|{user}|$COMMIT_USER|" | sed "s|{url}|$COMMIT_URL|")
+        MESSAGE=$(echo $MESSAGE | sed "s|{title}|$COMMIT_TITLE|" | sed "s|{user}|$COMMIT_USER|" | sed "s|{url}|$COMMIT_URL|")
         curl -X POST ${{ inputs.discord-webhook-url }} \
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
