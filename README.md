@@ -40,7 +40,7 @@ jobs:
 
     steps:
     - name: Discord Github Notification
-      uses: Aleph-Kim/discord-github-notification@v1
+      uses: Aleph-Kim/discord-github-notification@v1.2.0
       with:
         discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }} # secret key에 저장한 discord webhook url
         language: "english" # 필수 X
@@ -124,7 +124,7 @@ Ex. PR이 생성되거나 push 이벤트가 발생했을 때만 한국어로 알
 {
     "korean": {
         "PR_OPENED": "PR이!!!!!!!!!!!!!!!!!!!! 또!!!!!!!!!!!!!! 올라왔네!!!!!!!!!!!!!!!!!!!!!!!!!!!: {title}\n PR한 놈: {user}\n PR url: {url}",
-        "PUSH": "감히 누가 main 브랜치에 바로 커밋을 올리나? 나보다 짬 낮기만 해봐 \n커밋 명: {title}\n 커밋 올린 놈: {user}\n{url}"
+        "PUSH": "{title}\n아이고.. main 브랜치로.. 바로 푸시를 하면 곤란한데...\n 커밋 올린 놈: {user}\n{url}"
     },
 }
 ```
