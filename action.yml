@@ -128,5 +128,5 @@ runs:
         -H "Content-Type: application/json" \
         -d "{\"content\": \"${MESSAGE}\"}"
 branding:
-  color: 'blue'
-  icon: 'bell'
+  icon: 'message-circle'
+  color: 'gray-dark'
