@@ -37,7 +37,7 @@ jobs:
 
     steps:
     - name: Discord Github Notification
-      uses: Aleph-Kim/discord-github-notification@v1.2.0
+      uses: Aleph-Kim/discord-github-notification@v1.2.1
       with:
         discord-webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }} # Discord webhook URL stored in secrets
         language: 'english' # Set language to English (default: Korean)
